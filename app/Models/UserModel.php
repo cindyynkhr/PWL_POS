@@ -17,5 +17,5 @@ class UserModel extends Model
      * 
      * @var array
      */
-    protected $fillable = ['level_id','user_kode','nama','password'];
+    protected $fillable = ['level_id','user_kode','nama'];
 }

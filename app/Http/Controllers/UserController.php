@@ -11,12 +11,27 @@ class UserController extends Controller
 {
 
     public function index(){
-        $user = UserModel::firstOrNew(
-            ['user_kode'=>'manager',
-            'nama' => 'Manager',
-            ],
-        );
-        return view('user', ['data' => $user]);
+        //2.4 soal 7
+        // $user = UserModel::firstOrNew(
+        //     [
+        //         'user_kode' => 'manager33',
+        //         'nama' => 'Manager tiga tiga',
+        //         'password' => Hash::make('12345'),
+        //         'level_id' => 2
+        //     ],
+        // );
+        // $user->save();
+
+        // return view('user', ['data' => $user]);
+
+
+        //2.4 soal 6
+        // $user = UserModel::firstOrNew(
+        //     ['user_kode'=>'manager',
+        //     'nama' => 'Manager',
+        //     ],
+        // );
+        // return view('user', ['data' => $user]);
     }
 }
 // $user = UserModel::where('level_id', 2)->count();

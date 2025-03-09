@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Username</th>
+                <th>user_kode</th>
                 <th>Nama</th>
                 <th>ID Level Pengguna</th>
             </tr>
@@ -18,7 +18,7 @@
             @foreach($user as $d)
             <tr>
                 <td>{{ $d->id_user }}</td>
-                <td>{{ $d->username }}</td>
+                <td>{{ $d->user_kode }}</td>
                 <td>{{ $d->nama }}</td>
                 <td>{{ $d->level_id }}</td>
             </tr>

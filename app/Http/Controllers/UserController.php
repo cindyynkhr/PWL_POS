@@ -10,31 +10,34 @@ use Illuminate\Database\Eloquent\Model;
 class UserController extends Controller
 {
     public function index(){
-        $data = [
-            'level_id' => 2,
-            'user_kode' => 'manager_tiga',
-            'nama' => 'Manager 3',
-            'password' => Hash::make('12345')
-        ];
-        UserModel::create($data);
-
-        $user = UserModel::all();
-        return view('user_kode', ['data' => $user]);
-
-        // $data = [
-        //     'user_kode' => 'customer-1',
-        //     'nama' => 'Pelanggan',
-        //     'password' => Hash::make('12345'),
-        //     'level_id' => 4
-        // ];
-        // UserModel::insert($data);
-
-        // $data = [
-        //     'nama' => 'Pelanggan Pertama',
-        // ];
-        // UserModel::where('username', 'customer-1')->update($data);
-
-        // $user = UserModel::all();
-        // return view('user', ['data' => $user]);
+        $user = UserModel::find(1);
+        return view('user', ['data' => $user]);
     }
 }
+
+// $data = [
+//     'level_id' => 2,
+//     'user_kode' => 'manager_tiga',
+//     'nama' => 'Manager 3',
+//     'password' => Hash::make('12345')
+// ];
+// UserModel::create($data);
+
+// $user = UserModel::all();
+// return view('user_kode', ['data' => $user]);
+
+// $data = [
+//     'user_kode' => 'customer-1',
+//     'nama' => 'Pelanggan',
+//     'password' => Hash::make('12345'),
+//     'level_id' => 4
+// ];
+// UserModel::insert($data);
+
+// $data = [
+//     'nama' => 'Pelanggan Pertama',
+// ];
+// UserModel::where('username', 'customer-1')->update($data);
+
+// $user = UserModel::all();
+// return view('user', ['data' => $user]);

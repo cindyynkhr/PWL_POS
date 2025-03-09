@@ -9,20 +9,20 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>user_kode</th>
+                <th>username</th>
                 <th>Nama</th>
                 <th>ID Level Pengguna</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($user as $d)
+            {{-- @foreach($user as $data) --}}
             <tr>
-                <td>{{ $d->id_user }}</td>
-                <td>{{ $d->user_kode }}</td>
-                <td>{{ $d->nama }}</td>
-                <td>{{ $d->level_id }}</td>
+                <td>{{ $data->id_user }}</td>
+                <td>{{ $data->user_kode }}</td>
+                <td>{{ $data->nama }}</td>
+                <td>{{ $data->level_id }}</td>
             </tr>
-            @endforeach
+            {{-- @endforeach --}}
         </tbody>
     </table>
 </body>

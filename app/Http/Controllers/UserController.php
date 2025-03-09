@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
+    public function index(){
+        $user =UserModel::with('level')->get();
+        dd($user);
+        return view('user', ['data' => $user]);
+    }
     public function hapus($id){
         $user = UserModel::find($id);
         $user->delete();
@@ -42,11 +47,11 @@ class UserController extends Controller
         return redirect('/user');
     }
 
-    public function index(){
-        //2.6 dan 2.7
-        $user = UserModel::all();
-        return view('user', ['data' => $user]);
-    }
+    // public function index(){
+    //     //2.6 dan 2.7
+    //     $user = UserModel::all();
+    //     return view('user', ['data' => $user]);
+    // }
 
         public function tambah(){
             return view('user_tambah');

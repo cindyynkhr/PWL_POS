@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('m_user', function (Blueprint $table) {
             $table->id('id_user');
-            $table->unsignedBigInteger('level_id')->index(); //indexing untuk ForeignKey
+            $table->unsignedBigInteger('id_level')->index(); //indexing untuk ForeignKey
             $table->string ('user_kode', 20)->unique(); //uniuqe untuk primary key
             $table->string('nama', 100);
             $table->string('password');
             $table->timestamps();
 
             //Mendefinisikan Foreign Key pada kolom level_id mengacu pada kolom level_id di table m_level
-            $table->foreign('level_id')->references('id_level')->on('m_level');
+            $table->foreign('id_level')->references('id_level')->on('m_level');
         });
     }
 

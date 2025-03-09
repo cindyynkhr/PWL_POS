@@ -11,6 +11,51 @@ class UserController extends Controller
 {
 
     public function index(){
+        //2.5 soal 3
+        $user = UserModel::create([
+            'user_kode' => 'manager 11',
+            'nama' => 'Manager 11',
+            'password' => Hash::make('12345'),
+            'level_id' => 2
+        ]);
+
+        $user->user_kode = 'manager 12';
+
+        $user -> save();
+
+        $user->wasChanged();
+        $user->wasChanged('user_kode');
+        $user->wasChanged(['user_kode', 'level_id']);
+        $user->wasChanged('nama');
+        dd($user->wasChanged(['user_kode', 'nama']));
+        
+        //2.5 soal 1
+        // $user = UserModel::create([
+        //     'user_kode' => 'manager 55',
+        //     'nama' => 'Manager 55',
+        //     'password' => Hash::make('12345'),
+        //     'level_id' => 2   
+        // ]);
+
+        // $user -> user_kode = 'manager 56';
+
+        // $user -> isDirty();
+        // $user->isDirty('user_kode');
+        // $user -> isDirty('nama');
+        // $user -> isDirty(['nama', 'user_kode']);
+
+        // $user->isClean();
+        // $user->isClean('user_kode');
+        // $user->isClean('nama');
+        // $user->isClean(['user_kode', 'nama']);
+
+        // $user -> save();
+
+        // $user->isDirty();
+        // $user->isClean();
+        // dd($user->isDirty());
+
+
         //2.4 soal 7
         // $user = UserModel::firstOrNew(
         //     [

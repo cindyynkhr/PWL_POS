@@ -9,25 +9,66 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
+    public function hapus($id){
+        $user = UserModel::find($id);
+        $user->delete();
+        return redirect('/user');
+    }
+    public function ubah( $id){
+        $user = UserModel::find($id);
+        return view('user_ubah', ['data' => $user]);
+    }
+
+    public function ubah_simpan($id, Request $request){
+        $user = UserModel::find($id);
+
+        $user->user_kode = $request->user_kode;
+        $user->nama = $request->nama;
+        $user->password = Hash::make('$request->password');
+        $user->level_id = $request->level_id;
+
+        $user->save();
+
+        return redirect('/user');
+    }
+    public function tambah_simpan(Request $request){
+        //2.6 nomer 9
+        UserModel::create([
+            'user_kode' => $request -> user_kode,
+            'nama' => $request -> nama,
+            'password' => Hash::make($request->password),
+            'level_id' => $request->level_id
+        ]);
+        return redirect('/user');
+    }
 
     public function index(){
+        //2.6 dan 2.7
+        $user = UserModel::all();
+        return view('user', ['data' => $user]);
+    }
+
+        public function tambah(){
+            return view('user_tambah');
+        }
+        
         //2.5 soal 3
-        $user = UserModel::create([
-            'user_kode' => 'manager 11',
-            'nama' => 'Manager 11',
-            'password' => Hash::make('12345'),
-            'level_id' => 2
-        ]);
+        // $user = UserModel::create([
+        //     'user_kode' => 'manager 11',
+        //     'nama' => 'Manager 11',
+        //     'password' => Hash::make('12345'),
+        //     'level_id' => 2
+        // ]);
 
-        $user->user_kode = 'manager 12';
+        // $user->user_kode = 'manager 12';
 
-        $user -> save();
+        // $user -> save();
 
-        $user->wasChanged();
-        $user->wasChanged('user_kode');
-        $user->wasChanged(['user_kode', 'level_id']);
-        $user->wasChanged('nama');
-        dd($user->wasChanged(['user_kode', 'nama']));
+        // $user->wasChanged();
+        // $user->wasChanged('user_kode');
+        // $user->wasChanged(['user_kode', 'level_id']);
+        // $user->wasChanged('nama');
+        // dd($user->wasChanged(['user_kode', 'nama']));
         
         //2.5 soal 1
         // $user = UserModel::create([
@@ -77,7 +118,7 @@ class UserController extends Controller
         //     ],
         // );
         // return view('user', ['data' => $user]);
-    }
+    
 }
 // $user = UserModel::where('level_id', 2)->count();
 // // dd($user);

@@ -53,27 +53,25 @@ class UserModel extends Model
 //     }
 // }
 
-class KategoriModel extends Model
-{
-/*************  ✨ Codeium Command ⭐  *************/
-    /**
-     * Get the barang associated with the KategoriModel.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+// class KategoriModel extends Model
+// {
+//     /**
+//      * Get the barang associated with the KategoriModel.
+//      *
+//      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//      */
 
-/******  87d250b5-53b3-47be-8f30-c9b0b54f032b  *******/
-    public function barang(): HasMany
-    {
-        return $this->hasMany(BarangModel::class, 'barang_id', 'barang_id');
-    }
-}
+//     public function barang(): HasMany
+//     {
+//         return $this->hasMany(BarangModel::class, 'barang_id', 'barang_id');
+//     }
+// }
 
-// One to Many (Inverse) / Belongs To
-class BarangModel extends Model
-{
-    public function kategori(): BelongsTo
-    {
-        return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');
-    }
-}
+// // One to Many (Inverse) / Belongs To
+// class BarangModel extends Model
+// {
+//     public function kategori(): BelongsTo
+//     {
+//         return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');
+//     }
+// }

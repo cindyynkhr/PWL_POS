@@ -39,19 +39,19 @@ class UserModel extends Model
     }
 }
 
-class LevelModel extends Model
-{
-    use HasFactory;
+// class LevelModel extends Model
+// {
+//     use HasFactory;
 
-    protected $table = 'm_level'; // Pastikan ini sesuai dengan nama tabel di database
-    protected $primaryKey = 'id_level'; // Primary key tabel
+//     protected $table = 'm_level'; // Pastikan ini sesuai dengan nama tabel di database
+//     protected $primaryKey = 'id_level'; // Primary key tabel
 
-    protected $fillable = ['level_nama', 'level_kode'];
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(UserModel::class, 'id_level', 'id_level');
-    }
-}
+//     protected $fillable = ['level_nama', 'level_kode'];
+//     public function user(): BelongsTo
+//     {
+//         return $this->belongsTo(UserModel::class, 'id_level', 'id_level');
+//     }
+// }
 
 class KategoriModel extends Model
 {

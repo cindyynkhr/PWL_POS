@@ -26,7 +26,7 @@
                 <td>{{ $d->id_user }}</td>
                 <td>{{ $d->user_kode }}</td>
                 <td>{{ $d->nama }}</td>
-                <td>{{ $d->level_id }}</td>
+                <td>{{ $d->id_level }}</td>
                 <td>{{ $d->level->level_kode }}</td>
                 <td>{{ $d->level->level_nama }}</td>
                 <td><a href="user/ubah/{{ $d->id_user }}">Ubah</a> | <a href="user/hapus/{{ $d->id_user }}">Hapus</a></td>

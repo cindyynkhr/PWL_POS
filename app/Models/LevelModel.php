@@ -15,8 +15,8 @@ class LevelModel extends Model
     protected $primaryKey = 'id_level'; // Primary key tabel
 
     protected $fillable = ['level_nama', 'level_kode'];
-    public function user(): BelongsTo
+    public function user(): HasMany
     {
-        return $this->belongsTo(UserModel::class, 'id_level', 'id_level');
+        return $this->HasMany(UserModel::class, 'id_level', 'id_level');
     }
 }

@@ -4,15 +4,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label>Level Pengguna</label>
                     <select name="id_level" id="id_level" class="form-control" required>
                         <option value="">- Pilih Level -</option>
-                        @foreach ($level as $l)
+                        @foreach($level as $l)
                             <option value="{{ $l->id_level }}">{{ $l->level_nama }}</option>
                         @endforeach
                     </select>
@@ -41,29 +42,15 @@
         </div>
     </div>
 </form>
+
 <script>
     $(document).ready(function() {
         $("#form-tambah").validate({
             rules: {
-                id_level: {
-                    required: true,
-                    number: true
-                },
-                user_kode: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 20
-                },
-                nama: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 100
-                },
-                password: {
-                    required: true,
-                    minlength: 6,
-                    maxlength: 20
-                }
+                id_level: { required: true, number: true },
+                user_kode: { required: true, minlength: 3, maxlength: 20 },
+                nama: { required: true, minlength: 3, maxlength: 100 },
+                password: { required: true, minlength: 6, maxlength: 20 }
             },
             submitHandler: function(form) {
                 $.ajax({

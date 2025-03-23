@@ -32,17 +32,15 @@
             </div>
           </div>
         </div>
-        <table class="table table-bordered table-striped table-hover table-sm" 
-id="table_user"> 
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_user"> 
           <thead> 
-            <tr><th>ID</th><th>Username</th><th>Nama</th><th>Level 
-Pengguna</th><th>Aksi</th></tr> 
+            <tr><th>ID</th><th>Username</th><th>Nama</th><th>Level Pengguna</th><th>Aksi</th></tr> 
           </thead> 
       </table> 
     </div> 
   </div> 
 
-  <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" databackdrop="static" 
+  <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" 
       data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 
 @endsection 

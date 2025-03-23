@@ -7,11 +7,51 @@ use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Iluminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 // use Illuminate\Support\Facades\Hash;
 // use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
+    //Store_ajax
+    public function store_ajax(Request $request)
+     {
+        //cek apakah request berupa ajax
+         if ($request->ajax() || $request->wantsJson()) {
+             $rules = [
+                 'id_level'  => 'required|integer',
+                 'user_kode'  => 'required|string|min:3|unique:m_user,user_kode',
+                 'nama'      => 'required|string|max:100',
+                 'password'  => 'required|string|min:6'
+             ];
+ 
+             $validator = Validator::make($request->all(), $rules);
+ 
+             if ($validator->fails()) {
+                 return response()->json([
+                     'status' => false, // response status, false: error/gagal, true: berhasil
+                     'message' => 'Validasi Gagal',
+                     'msgField' => $validator->errors(), //pesan eror validasi
+                 ]);
+             }
+ 
+             UserModel::create($request->all());
+             return response()->json([
+                 'status' => true,
+                 'message' => 'Data user berhasil disimpan'
+             ]);
+         }
+ 
+         return redirect('/user');
+     }
+
+    //Create_ajax
+    public function create_ajax(){
+        $level = LevelModel::select('id_level', 'level_nama')->get();
+
+        return view('user.create_ajax') -> with('level', $level);
+    }
+
     //Menampilkan data awal user
     public function index(){
         $breadcrumb = (object)[
@@ -75,7 +115,7 @@ class UserController extends Controller
     public function store(Request $request){
         $request->validate([
             //Ussername harus diisi berupa string, minimal 3 karakter, dan bernilai unik di tabel m_user kolom username 
-            'user_kode' => 'required|string|min:3|unique:m_user, user_kode',
+            'user_kode' => 'required|string|min:3|unique:m_user,user_kode',
             'nama' => 'required|string|max:100', //nama harus diidi, berupa string, dan maksimal 100 karakter
             'password' => 'required|min:5', //password harus diisi, minimal 5 karakter
             'id_level' => 'required|integer' //id_level harus diisi, berupa angka
@@ -165,7 +205,7 @@ class UserController extends Controller
             UserModel::destroy($id); //Hapus data level
         
             return redirect('/user')->with('success', 'Data user berhasil dihapus');
-        }catch(\Iluminate\Database\QueryException $e){
+        }catch(\Illuminate\Database\QueryException $e){
             
             //Jika terjadi eror ketika menghapus data, redirect kembali ke halaman dengan membawa pesan eror
             return redirect('/user')->with('error', 'Data user gagal di hapus karena masih terdapat tabel lain yang terkait dengan data ini');

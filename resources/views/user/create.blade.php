@@ -15,20 +15,20 @@
             <select class="form-control" id="id_level" name="id_level" required> 
               <option value="">- Pilih Level -</option> 
               @foreach($level as $item) 
-                <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option> 
+                <option value="{{ $item->id_level }}">{{ $item->level_nama }}</option> 
               @endforeach 
             </select> 
-            @error('level_id') 
+            @error('id_level') 
               <small class="form-text text-danger">{{ $message }}</small> 
             @enderror 
           </div> 
         </div> 
         <div class="form-group row"> 
-          <label class="col-1 control-label col-form-label">Username</label> 
+          <label class="col-1 control-label col-form-label">user_kode</label> 
           <div class="col-11"> 
             <input type="text" class="form-control" id="user_kode" name="user_kode" value="{{ 
-old('username') }}" required> 
-            @error('username') 
+old('user_kode') }}" required> 
+            @error('user_kode') 
               <small class="form-text text-danger">{{ $message }}</small> 
             @enderror 
           </div> 

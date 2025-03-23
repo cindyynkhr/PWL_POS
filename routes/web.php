@@ -8,7 +8,8 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\StokController;
-use Monolog\Level;
+use App\Http\Controllers\SupplierController;
+// use Monolog\Level;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +83,17 @@ Route::prefix('barang')->group(function() {
     Route::delete('/{id}', [BarangController::class, 'destroy']);
 });
 
+// route untuk supplier
+Route::group(['prefix' => 'supplier'], function () {
+    Route::get('/', [SupplierController::class, 'index']);           // menampilkan halaman awal user
+    Route::post('/list', [SupplierController::class, 'list']);       // menampilkan data user dalam bentuk json untuk datatables
+    Route::get('/create', [SupplierController::class, 'create']);    // menampilkan halaman form tambah user
+    Route::post('/', [SupplierController::class, 'store']);          // menyimpan data user baru
+    Route::get('/{id}', [SupplierController::class, 'show']);        // menampilkan detail user
+    Route::get('/{id}/edit', [SupplierController::class, 'edit']);   // menampilkan halaman form edit user
+    Route::put('/{id}', [SupplierController::class, 'update']);      // menyimpan perubahan data user
+    Route::delete('/{id}', [SupplierController::class, 'destroy']);  // menghapus data user
+});
 
 // Route::get('/level',[LevelController::class,'index']);
 // Route::get('/kategori',[KategoriController::class,'index']);

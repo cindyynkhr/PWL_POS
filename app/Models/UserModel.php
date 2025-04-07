@@ -6,6 +6,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable; //implementasi class autenticable
+
+class UserModel extends Authenticatable
+{
+    use HasFactory;
+
+    protected $table = 'm_user';
+    protected $primaryKey = 'id_user';
+    protected $fillable = ['user_kode', 'password', 'nama', 'id_level', 'created_at', 'updated_at'];
+
+    protected $hidden = ['password']; // jangan di tampilkan saat select
+    protected $casts = ['password' => 'hashed']; //caasting password agar otomatis di hash
+
+    //Relasi ke tabel level
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(LevelModel::class, 'id_level', 'id_level');
+    }
+}
+
+
+
 
 // class UserModel extends Model
 // {
@@ -24,20 +46,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
    
 // }
 
-class UserModel extends Model
-{
-    use HasFactory;
-
-    protected $table = 'm_user';
-    protected $primaryKey = 'id_user';
-
-    protected $fillable = ['id_level', 'user_kode', 'nama', 'password'];
-
-    public function level(): BelongsTo
-    {
-        return $this->belongsTo(LevelModel::class, 'id_level', 'id_level');
-    }
-}
 
 // class LevelModel extends Model
 // {

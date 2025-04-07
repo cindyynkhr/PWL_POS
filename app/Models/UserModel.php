@@ -36,6 +36,12 @@ class UserModel extends Authenticatable
     {
         return $this->level->level_kode == $role;
     }
+
+    // Mendapatkan Kode Role 
+    public function getRole()
+    {
+        return $this->level->level_kode;
+    }
 }
 
 

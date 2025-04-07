@@ -31,23 +31,23 @@ class BarangController extends Controller
 
     //create_ajax
     public function create_ajax(Request $request){
-        $kategori = KategoriModel::all();
+        $kategoris = KategoriModel::select('id_kategori', 'kategori_nama')->get();
 
-        return view('barang.create_ajax')->with('kategori', $kategori);
+        return view('barang.create_ajax')->with('kategori', $kategoris);
     }
 
     //store_ajax
     public function store_ajax(Request $request){
         if ($request->ajax() || $request->wantsJson()) {
-            $barang = BarangModel::create([
-                'barang_kode' => $request->barang_kode,
-                'barang_nama' => $request->barang_nama,
-                'id_kategori' => $request->id_kategori,
-                'harga_beli' => $request->harga_beli,
-                'harga_jual' => $request->harga_jual,
-            ]);
+            $rules=[
+                'id_kategori' => 'required|integer',
+                'barang_kode' => 'required|max:10|unique:m_barang,barang_kode',
+                'barang_nama' => 'required|max:100',
+                'harga_beli' => 'required|min:0',
+                'harga_jual' => 'required|min:0'
+            ];
 
-            $validator = Validator::make($request->all());
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return response()->json([
@@ -66,29 +66,16 @@ class BarangController extends Controller
         return redirect('/barang');
     }
     
-
-
-
     public function list(Request $request)
     {
-        $barang = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'id_kategori', 'harga_beli', 'harga_jual')
-            ->with('kategori');
+        $barangs = BarangModel::with('kategori')->select('barang_id', 'id_kategori', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual');
 
-        if ($request->id_kategori) {
-            $barang->where('id_kategori', $request->id_kategori);
-        }
-
-        return DataTables::of($barang)
+        return DataTables::of($barangs)
             ->addIndexColumn()
             ->addColumn('aksi', function ($barang) {
-                // $btn = '<a href="'.url('/barang/' . $barang->barang_id).'" class="btn btn-info btn-sm">Detail</a> ';
-                // $btn .= '<a href="'.url('/barang/' . $barang->barang_id . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
-                // $btn .= '<form class="d-inline-block" method="POST" action="'. url('/barang/'.$barang->barang_id).'">'
-                //     . csrf_field() . method_field('DELETE') .
-                //     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
                 $btn  = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                 $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
-                 $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> '; 
                 
                 return $btn;
             })
@@ -100,14 +87,14 @@ class BarangController extends Controller
     public function update_ajax(Request $request, $id){
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
+                // 'barang_id' => 'required|integer',
                 'barang_kode' => 'required|max:10|unique:m_barang,barang_kode,'.$id.',barang_id',
                 'barang_nama' => 'required|max:100',
-                'id_kategori' => 'required',
                 'harga_beli' => 'required|numeric',
-                'harga_jual' => 'required|numeric',
+                'harga_jual' => 'required|numeric'
             ];
 
-            $validator = Validator::make($request->all());
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return response()->json([
@@ -116,11 +103,9 @@ class BarangController extends Controller
                     'msgField' => $validator->errors() // menunjukkan field mana yang error
                 ]);
             }
+
             $check = BarangModel::find($id);
             if ($check) {
-                if(!$request->filled('password')) {
-                    $request->request->remove('password');
-                }
                 $check->update($request->all());
                 return response()->json([
                     'status' => true,
@@ -139,6 +124,7 @@ class BarangController extends Controller
     //confirm ajax
     public function confirm_ajax(Request $request, $id){
         $barang = BarangModel::find($id);
+
         return view('barang.confirm_ajax', ['barang' => $barang]);
     }
 
@@ -165,9 +151,9 @@ class BarangController extends Controller
     //menampilkan halaman form edit user ajax
     public function edit_ajax(string $id){
         $barang = BarangModel::find($id);
-        $barang = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'id_kategori', 'harga_beli', 'harga_jual')->get();
+        $kategori = KategoriModel::select('id_kategori', 'kategori_nama')->get();
 
-        return view('barang.edit_ajax', ['barang' => $barang]);
+        return view('barang.edit_ajax', ['barang' => $barang, 'kategori' => $kategori]);
     }
 
     public function create()
@@ -191,7 +177,7 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_id' => 'required',
+            'id_kategori' => 'required',
             'barang_kode' => 'required|unique:m_barang',
             'barang_nama' => 'required',
             'harga_beli' => 'required|numeric',
@@ -243,7 +229,7 @@ class BarangController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'kategori_id' => 'required',
+            'id_kategori' => 'required',
             'barang_kode' => 'required|unique:m_barang,barang_kode,'.$id.',barang_id',
             'barang_nama' => 'required',
             'harga_beli' => 'required|numeric',

@@ -27,9 +27,10 @@ class SupplierController extends Controller
      
      //create_ajax
      public function create_ajax(Request $request){
-         $supplier = SupplierModel::select('supplier_id', 'supplier_kode', 'nama','nama_pt', 'alamat')->get();
+        return view('supplier.create_ajax');
+        //  $supplier = SupplierModel::select('supplier_id', 'supplier_kode', 'nama','nama_pt', 'alamat')->get();
  
-         return view('supplier.create_ajax')->with('supplier', $supplier);
+        //  return view('supplier.create_ajax')->with('supplier', $supplier);
      }
 
      //store ajax
@@ -43,20 +44,34 @@ class SupplierController extends Controller
                  'alamat' => 'required|max:100',
              ];
  
-             $validator = Validator::make($request->all());
+             $validator = Validator::make($request->all(), $rules);
  
-             if ($validator->fails()) {
-                 return response()->json(['errors' => $validator->errors()]);
-             }
+            //  if ($validator->fails()) {
+            //      return response()->json(['errors' => $validator->errors()]);
+            //  }
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validasi Gagal',
+                        'msgField' => $validator->errors(),
+                    ]);
+                }
+
+                SupplierModel::create($request->all());
+    
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data supplier berhasil disimpan'
+                ]);
  
-             $supplier = SupplierModel::create([
-                 'supplier_kode' => $request->supplier_kode,
-                 'nama' => $request->nama,
-                 'nama_pt' => $request->nama_pt,
-                 'alamat' => $request->alamat,
-             ]);
+            //  $supplier = SupplierModel::create([
+            //      'supplier_kode' => $request->supplier_kode,
+            //      'nama' => $request->nama,
+            //      'nama_pt' => $request->nama_pt,
+            //      'alamat' => $request->alamat,
+            //  ]);
  
-             return response()->json(['success' => 'Data supplier berhasil disimpan']);
+             // return response()->json(['success' => 'Data supplier berhasil disimpan']);
          }
  
          return redirect('/supplier');
@@ -69,15 +84,11 @@ class SupplierController extends Controller
          return DataTables::of($suppliers)
              ->addIndexColumn()
              ->addColumn('aksi', function ($supplier) {
-                //  return '<a href="' . url('/supplier/' . $supplier->supplier_id) . '" class="btn btn-info btn-sm">Detail</a> '
-                //      . '<a href="' . url('/supplier/' . $supplier->supplier_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> '
-                //      . '<form class="d-inline-block" method="POST" action="' . url('/supplier/' . $supplier->supplier_id) . '">'
-                //      . csrf_field() . method_field('DELETE')
-                //      . '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
-                $btn  = '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                 $btn .= '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
-                 $btn .= '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> '; 
+                $btn  = '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id.'/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
+                 $btn .= '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id.'/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
+                 $btn .= '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id.'/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> '; 
             
+                 return $btn;
             })
              ->rawColumns(['aksi'])
              ->make(true);
@@ -94,7 +105,7 @@ class SupplierController extends Controller
                 'alamat' => 'required|max:100',
             ];
 
-            $validator = Validator::make($request->all());
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return response()->json([
@@ -105,9 +116,6 @@ class SupplierController extends Controller
             }
             $check = SupplierModel::find($id);
             if ($check) {
-            if(!$request->filled('password')) {
-                $request->request->remove('password');
-            }
                 $check->update($request->all());
                 return response()->json([
                     'status' => true,
@@ -152,7 +160,7 @@ class SupplierController extends Controller
 
      //menampilkan halaman form edit ajax
      public function edit_ajax($id){
-         $supplier = SupplierModel::findOrFail($id);
+         $supplier = SupplierModel::find($id);
     
  
          return view('supplier.edit_ajax')->with('supplier', $supplier);

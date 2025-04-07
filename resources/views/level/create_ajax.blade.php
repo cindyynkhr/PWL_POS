@@ -11,48 +11,48 @@
         <div class="modal-body">
             <div class="form-group">
                 <label>Kode Level</label>
-                <input value ="" type="text" name="level_kode" id="level_kode" class="form-control" required>
+                <input value="" type="text" name="level_kode" id="level_kode" class="form-control" required>
                 <small id="error-level_kode" class="error-text form-text text-danger"></small>
             </div>
             <div class="form-group">
                 <label>Nama Level</label>
-                <input value ="" type="text" name="level_nama" id="level_nama" class="form-control" required>
+                <input value="" type="text" name="level_nama" id="level_nama" class="form-control" required>
                 <small id="error-level_nama" class="error-text form-text text-danger"></small>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" data-dismiss="modal"class="btn btn-warning">Button</button>
+            <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </div>
 </div>
 </form>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#form-tambah").validate({
             rules: {
-                level_kode: { required: true, minlenght: 3, maxlenght: 20 },
-                level_nama: { required: true, minlenght: 3, maxlenght: 100 }
+                level_kode: {required: true, maxlength: 20},
+                level_nama: {required: true, maxlength: 100}
             },
-            submitHandler: function (form) {
+            submitHandler: function(form){
                 $.ajax({
                     url: form.action, 
                     type: form.method,
                     data: $(form).serialize(),
-                    success: function (response) {
-                        console.log(response);
-                        if (response.status) {
+                    success: function(response) {
+                        // console.log(response);
+                        if(response.status){
                             $('#myModal').modal('hide');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            dataUser.ajax.reload();
-                        } else {
+                            dataLevel.ajax.reload();
+                        }else{
                             $('.error-text').text('');
                             $.each(response.msgField, function (prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
+                                $('#error-'+prefix).text(val[0]);
                             });
                             Swal.fire({
                                 icon: 'error',
@@ -60,17 +60,22 @@
                                 text: response.message
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
                     }
                 });
-                return false;
+                // return false;
             },
             errorElement: 'span',
             errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
-            }, highlight: function (element, errorClass, validClass) {
+            }, 
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
-            }, unhighlight: function (element, errorClass, validClass) {
+            }, 
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });

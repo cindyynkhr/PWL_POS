@@ -31,16 +31,16 @@
     $(document).ready(function() {
         $('#form-tambah').validate({
             rules: {
-                kategori_kode: { required: true, minlenght: 3, maxlenght: 20 },
-                kategori_nama: { required: true, minlenght: 3, maxlenght: 100 }
+                kategori_kode: {required: true, minlength: 3, maxlength: 10},
+                kategori_nama: {required: true, minlength: 3, maxlength: 100}
             },
             submitHandler: function (form) {
-                $ajax({
+                $.ajax({
                     url: form.action,
                     type: form.method,
                     data: $(form).serialize(),
                     success: function (response) {
-                        console.log(response);
+                        // console.log(response);
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire({

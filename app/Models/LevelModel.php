@@ -14,9 +14,9 @@ class LevelModel extends Model
     protected $table = 'm_level'; // Pastikan ini sesuai dengan nama tabel di database
     protected $primaryKey = 'id_level'; // Primary key tabel
 
-    protected $fillable = ['level_nama', 'level_kode'];
+    protected $fillable = ['level_kode', 'level_nama'];
     public function user(): HasMany
     {
-        return $this->HasMany(UserModel::class, 'id_level', 'id_level');
+        return $this->HasMany(UserModel::class);
     }
 }

@@ -47,7 +47,8 @@
               $("#form-delete").validate({ 
                   rules: {}, 
                   submitHandler: function(form) { 
-                      $.ajax({                        url: form.action, 
+                      $.ajax({                        
+                          url: form.action, 
                           type: form.method, 
                           data: $(form).serialize(), 
                           success: function(response) { 

@@ -28,26 +28,26 @@ class LevelController extends Controller
 
     //fungsi create
     public function create_ajax(){
-        $level = LevelModel::select('id_level', 'level_nama')->get();
+        return view('level.create_ajax');
 
-        return view('level.create_ajax')->with('level', $level);
+        // $level = LevelModel::select('id_level', 'level_kode', 'level_nama')->get();
+        // return view('level.create_ajax')->with('level', $level);
     }
 
     public function list(Request $request)
     {
         $levels = LevelModel::select('id_level', 'level_kode', 'level_nama');
 
+        if ($request->id_level) {
+            $levels->where('id_level', $request->id_level);
+        }
+
         return DataTables::of($levels)
             ->addIndexColumn()
             ->addColumn('aksi', function ($level) {
-                // $btn = '<a href="'.url('/level/' . $level->id_level).'" class="btn btn-info btn-sm">Detail</a> ';
-                // $btn .= '<a href="'.url('/level/' . $level->id_level . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
-                // $btn .= '<form class="d-inline-block" method="POST" action="'. url('/level/'.$level->id_level).'">'
-                //     . csrf_field() . method_field('DELETE') .
-                //     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakit menghapus data ini?\');">Hapus</button></form>';
-                $btn  = '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                $btn .= '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
-                $btn .= '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> '; 
+                $btn  = '<button onclick="modalAction(\''.url('/level/' . $level->id_level . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/level/' . $level->id_level . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/level/' . $level->id_level . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> '; 
 
                 return $btn;
             })
@@ -58,8 +58,7 @@ class LevelController extends Controller
     //menampilkan halaman form edit user ajax
     public function edit_ajax(string $id){
         $level = LevelModel::find($id);
-        $level = LevelModel::select('id_level', 'level_nama')->get();
-
+        
         return view('level.edit_ajax', ['level' => $level]);
     }
 
@@ -68,23 +67,25 @@ class LevelController extends Controller
         //cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_kode' => 'required|max:10|unique:m_level,level_kode',
-                'level_nama' => 'required|max:100',
+                'level_kode' => 'required|string|max:20|unique:m_level,level_kode',
+                'level_nama' => 'required|string|max:100'
             ];
 
             // validasi
             $validator = Validator::make($request->all(), $rules);
+
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false, // respon json, true: berhasil, false: gagal
-                    'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors() // menunjukkan field mana yang error
+                    'message' => 'Validasi gagal',
+                    'msgField' => $validator->errors(), // menunjukkan field mana yang error
                 ]);
             }
-            $level = LevelModel::create([
+            LevelModel::create([
                 'level_kode' => $request->level_kode,
-                'level_nama' => $request->level_nama,
+                'level_nama' => $request->level_nama
             ]);
+
             return response()->json([
                 'status' => true,
                 'message' => 'Data berhasil disimpan'
@@ -98,7 +99,7 @@ class LevelController extends Controller
         //cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_kode' => 'required|max:10|unique:m_level,level_kode,'.$id.',id_level',
+                'level_kode' => 'required|max:20|unique:m_level,level_kode,'.$id.',id_level',
                 'level_nama' => 'required|max:100',
             ];
 
@@ -144,11 +145,18 @@ class LevelController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $level = LevelModel::find($id);
             if ($level) {
-                $level->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+                try {
+                    $level->delete();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data level berhasil dihapus'
+                    ]);
+                }catch(\Illuminate\Database\QueryException $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Data level gagal dihapus karena masih terkait dengan data lain'
+                    ]);
+                }
             }else{
                 return response()->json([
                     'status' => false,
@@ -167,7 +175,7 @@ class LevelController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Tambah Data Level User'
+            'title' => 'Tambah Data Level Level'
         ];
 
         $activeMenu = 'level';
@@ -197,7 +205,7 @@ class LevelController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Detail Data Level User'
+            'title' => 'Detail Data Level Level'
         ];
 
         $level = LevelModel::find($id);
@@ -213,7 +221,7 @@ class LevelController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Edit Data Level User'
+            'title' => 'Edit Data Level Level'
         ];
 
         $level = LevelModel::find($id);

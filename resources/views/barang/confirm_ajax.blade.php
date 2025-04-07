@@ -14,7 +14,7 @@
           </div> 
       </div> 
   @else 
-      <form action="{{ url('/barang/' . $barang->id_barang.'/delete_ajax') }}" method="POST" id="form-delete"> 
+      <form action="{{ url('/barang/' . $barang->barang_id.'/delete_ajax') }}" method="POST" id="form-delete"> 
       @csrf 
       @method('DELETE') 
       <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
@@ -28,14 +28,25 @@
                       <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5> 
                       Apakah Anda ingin menghapus data seperti di bawah ini? 
                   </div> 
-                  <table class="table table-sm table-bordered table-striped"> 
-                      <tr><th class="text-right col-3">Kategori Barang :</th><td class="col-9">{{ $barang->kategori->kategori_nama }}</td></tr> 
-                      <tr><th class="text-right col-3">Kode Barang :</th><td class="col-9">{{ $barang->barang_kode }}</td></tr> 
-                      <tr><th class="text-right col-3">Nama Barang :</th><td class="col-9">{{ $barang->barang_nama }}</td></tr> 
-                      <tr><th class="text-right col-3">Harga Beli :</th><td class="col-9">{{ $barang->harga_beli }}</td></tr>
-                      <tr><th class="text-right col-3">Harga Jual :</th><td class="col-9">{{ $barang->harga_jual }}</td></tr>
-                  </table> 
-              </div> 
+                  <table class="table table-sm table-bordered table-striped">
+                    <tr>
+                        <th class="text-right col-3">Kode Barang :</th>
+                        <td class="col-9">{{ $barang->barang_kode }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right col-3">Nama Barang :</th>
+                        <td class="col-9">{{ $barang->barang_nama }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right col-3">Harga Beli :</th>
+                        <td class="col-9">{{ number_format($barang->harga_beli, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right col-3">Harga Jual :</th>
+                        <td class="col-9">{{ number_format($barang->harga_jual, 0, ',', '.') }}</td>
+                    </tr>
+                </table>
+            </div>
               <div class="modal-footer"> 
                   <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button> 
                   <button type="submit" class="btn btn-primary">Ya, Hapus</button> 
@@ -48,7 +59,8 @@
               $("#form-delete").validate({ 
                   rules: {}, 
                   submitHandler: function(form) { 
-                      $.ajax({                        url: form.action, 
+                      $.ajax({                        
+                          url: form.action, 
                           type: form.method, 
                           data: $(form).serialize(), 
                           success: function(response) { 

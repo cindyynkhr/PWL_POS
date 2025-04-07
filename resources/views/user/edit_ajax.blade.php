@@ -17,7 +17,7 @@
          </div>
      </div>
  @else
-     <form action="{{ url('/user/' . $user->id_user . '/update_ajax') }}" method="POST" id="form-edit">
+     <form action="{{ url('/user/' .$user->id_user.'/update_ajax') }}" method="POST" id="form-edit">
          @csrf
          @method('PUT')
          <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -34,7 +34,7 @@
                          <select name="id_level" id="id_level" class="form-control" required>
                              <option value="">- Pilih Level -</option>
                              @foreach($level as $l)
-                                 <option {{ ($l->id_level == $user->id_level) ? 'selected' : '' }}
+                                 <option {{ ($l->id_level == $user->id_level)? 'selected' : '' }}
                                      value="{{ $l->id_level }}">{{ $l->level_nama }}
                                  </option>
                              @endforeach
@@ -48,7 +48,7 @@
                      </div>
                      <div class="form-group">
                          <label>Nama</label>
-                         <input value="{{ $user->name }}" type="text" name="nama" id="nama" class="form-control" required>
+                         <input value="{{ $user->nama }}" type="text" name="nama" id="nama" class="form-control" required>
                          <small id="error-nama" class="error-text form-text text-danger"></small>
                      </div>
                      <div class="form-group">
@@ -72,7 +72,7 @@
                  rules: {
                      id_level: { required: true, number: true },
                      user_kode: { required: true, minlength: 3, maxlength: 20 },
-                     name: { required: true, minlength: 3, maxlength: 100 },
+                     nama: { required: true, minlength: 3, maxlength: 100 },
                      password: { minlength: 6, maxlength: 20 }
                  },
                  submitHandler: function(form) {
@@ -92,7 +92,7 @@
                              } else {
                                  $('.error-text').text('');
                                  $.each(response.msgField, function(prefix, val) {
-                                     $('#error-' + prefix).text(val[0]);
+                                     $('#error-'+prefix).text(val[0]);
                                  });
                                  Swal.fire({
                                      icon: 'error',

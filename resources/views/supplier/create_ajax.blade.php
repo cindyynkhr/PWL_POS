@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Kode upplier</label>
+                    <label>Kode Supplier</label>
                     <input value ="" type="text" name="supplier_kode" id="supplier_kode" class="form-control" required>
                     <small id="error-supplier_kode" class="error-text form-text text-danger"></small>
                 </div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal"class="btn btn-warning">Button</button>
+                <button type="button" data-dismiss="modal"class="btn btn-warning">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </div>
@@ -41,10 +41,10 @@
     $(document).ready(function() {
         $('#form-tambah').validate({
            rules: {
-                supplier_kode: { required: true, minlenght: 3, maxlenght: 20 },
-                nama: { required: true, minlenght: 3, maxlenght: 100 },
-                nama_pt: { required: true, minlenght: 3, maxlenght: 100 },
-                alamat: { required: true, minlenght: 3, maxlenght: 100 }        
+                supplier_kode: { required: true, minlength: 3, maxlength: 20 },
+                nama: { required: true, minlength: 3, maxlength: 100 },
+                nama_pt: { required: true, minlength: 3, maxlength: 100 },
+                alamat: { required: true, minlength: 3, maxlength: 100 }        
             },
             submitHandler: function (form) {
                 $.ajax({
@@ -52,7 +52,7 @@
                     type: form.method,
                     data: $(form).serialize(),
                     success: function (response) {
-                        console.log(response);
+                        // console.log(response);
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire({

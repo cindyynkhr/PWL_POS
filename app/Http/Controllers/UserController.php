@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
-// use Illuminate\Support\Facades\Hash;
-// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
@@ -31,15 +31,14 @@ class UserController extends Controller
     }
     
     //Store_ajax
-    public function store_ajax(Request $request)
-     {
+    public function store_ajax(Request $request) {
         //cek apakah request berupa ajax
          if ($request->ajax() || $request->wantsJson()) {
              $rules = [
                  'id_level'  => 'required|integer',
-                 'user_kode'  => 'required|string|min:3|unique:m_user,user_kode',
+                 'user_kode' => 'required|string|min:3|unique:m_user,user_kode',
                  'nama'      => 'required|string|max:100',
-                 'password'  => 'required|string|min:6'
+                 'password'  => 'required|min:6'
              ];
  
              $validator = Validator::make($request->all(), $rules);
@@ -52,13 +51,8 @@ class UserController extends Controller
                  ]);
              }
  
-             UserModel::create([
-                'user_kode' => $request->user_kode,
-                'nama' => $request->nama,
-                'password' => bcrypt($request->password), // Mengenkripsi password
-                'id_level' => $request->id_level
-            ]);
-            
+             UserModel::create($request->all()); //simpan data user baru ke tabel m_user
+        
              return response()->json([
                  'status' => true,
                  'message' => 'Data user berhasil disimpan'
@@ -81,22 +75,22 @@ class UserController extends Controller
     public function list(Request $request){
         $user = UserModel::select('id_user', 'user_kode', 'nama', 'id_level')->with('level');
 
-    if ($request->id_level) {
-        $user->where('id_level', $request->id_level);
-    }
+        if ($request->id_level) {
+            $user->where('id_level', $request->id_level);
+        }
 
-
-    return DataTables::of($user)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($user) {
-            $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->id_user . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-            $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->id_user . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-            $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->id_user . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
-            return $btn;
-        })        
-        ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html 
-        ->make(true); 
-    }
+        return DataTables::of($user)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($user) {
+                $btn = '<button onclick="modalAction(\''.url('/user/' . $user->id_user . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->id_user . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->id_user . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                
+                return $btn;
+            })        
+            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html 
+            ->make(true); 
+        }
 
     //Menampilkan halaman form edit user ajax
     public function edit_ajax(string $id){
@@ -112,7 +106,7 @@ class UserController extends Controller
          if ($request->ajax() || $request->wantsJson()) {
              $rules = [
                  'id_level' => 'required|integer',
-                 'user_kode' => 'required|max:20|unique:m_user,user_kode,' . $id . ',id_user',
+                 'user_kode' => 'required|max:20|unique:m_user,user_kode,'.$id.',id_user',
                  'nama' => 'required|max:100',
                  'password' => 'nullable|min:6|max:20'
              ];

@@ -51,7 +51,7 @@
 @push('js') 
   <script> 
     function modalAction(url = '') {
-      $('#myModal').load(url, function() {
+      $('#myModal').load(url, function(){
         $('#myModal').modal('show');
       });
     }

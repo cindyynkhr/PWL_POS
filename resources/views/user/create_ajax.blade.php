@@ -4,8 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -47,10 +46,10 @@
     $(document).ready(function() {
         $("#form-tambah").validate({
             rules: {
-                id_level: { required: true, number: true },
-                user_kode: { required: true, minlength: 3, maxlength: 20 },
-                nama: { required: true, minlength: 3, maxlength: 100 },
-                password: { required: true, minlength: 6, maxlength: 20 }
+                id_level: {required: true, number: true},
+                user_kode: {required: true, minlength: 3, maxlength: 20},
+                nama: {required: true, minlength: 3, maxlength: 100},
+                password: {required: true, minlength: 6, maxlength: 20}
             },
             submitHandler: function(form) {
                 $.ajax({
@@ -58,7 +57,7 @@
                     type: form.method,
                     data: $(form).serialize(),
                     success: function(response) {
-                        if (response.status) {
+                        if (response.status){
                             $('#myModal').modal('hide');
                             Swal.fire({
                                 icon: 'success',
@@ -69,7 +68,7 @@
                         } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
+                                $('#error-'+prefix).text(val[0]);
                             });
                             Swal.fire({
                                 icon: 'error',

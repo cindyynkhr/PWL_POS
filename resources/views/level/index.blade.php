@@ -55,9 +55,12 @@
              ajax: {
                  "url": "{{ url('level/list') }}",
                  "dataType": "json",
-                 "type": "POST"
+                 "type": "POST",
+                 "data": function(d) {
+                     d.id_level= $('#id_level').val();
+                 }
              },
-             columns: [
+             columns: [ 
                  {
                      data: "DT_RowIndex",
                      className: "text-center",

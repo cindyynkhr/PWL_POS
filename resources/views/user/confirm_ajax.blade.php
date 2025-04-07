@@ -3,7 +3,7 @@
          <div class="modal-content"> 
              <div class="modal-header"> 
                  <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>                 
-                 <button type="button" class="close" data-dismiss="modal" arialabel="Close"><span aria-hidden="true">&times;</span></button> 
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
              </div> 
              <div class="modal-body"> 
                  <div class="alert alert-danger"> 
@@ -14,13 +14,14 @@
          </div> 
      </div> 
  @else 
-     <form action="{{ url('/user/' . $user->id_user.'/delete_ajax') }}" method="POST" id="formdelete">     @csrf 
+     <form action="{{ url('/user/' . $user->id_user.'/delete_ajax') }}" method="POST" id="form-delete">     
+     @csrf 
      @method('DELETE') 
      <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
          <div class="modal-content"> 
              <div class="modal-header"> 
                  <h5 class="modal-title" id="exampleModalLabel">Hapus Data User</h5>                 
-                 <button type="button" class="close" data-dismiss="modal" arialabel="Close"><span aria-hidden="true">&times;</span></button> 
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
              </div> 
              <div class="modal-body"> 
                  <div class="alert alert-warning"> 
@@ -34,7 +35,7 @@
                  </table> 
              </div> 
              <div class="modal-footer"> 
-                 <button type="button" data-dismiss="modal" class="btn btnwarning">Batal</button> 
+                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button> 
                  <button type="submit" class="btn btn-primary">Ya, Hapus</button>             
                 </div> 
          </div> 
@@ -42,7 +43,7 @@
      </form> 
      <script> 
          $(document).ready(function() {             
-            $("#formdelete").validate({                 
+            $("#form-delete").validate({                 
                 rules: {}, 
                  submitHandler: function(form) { 
                      $.ajax({ 

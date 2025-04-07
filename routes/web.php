@@ -29,7 +29,7 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/',[WelcomeController::class,'index']);
-    
+
     //user
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);                      //menampilkan halaman awal user
@@ -49,7 +49,25 @@ Route::middleware(['auth'])->group(function(){
     });
     
     // route untuk level
-    Route::prefix('level')->group(function () {
+    // Route::prefix('level')->group(function () {
+    //     Route::get('/', [LevelController::class, 'index']);
+    //     Route::post('/list', [LevelController::class, 'list']);
+    //     Route::get('/create', [LevelController::class, 'create']);
+    //     Route::post('/', [LevelController::class, 'store']);                     
+    //     Route::get('/create_ajax', [LevelController::class, 'create_ajax']);     
+    //     Route::post('/ajax', [LevelController::class, 'store_ajax']); 
+    //     Route::get('/{id}', [LevelController::class, 'show']);
+    //     Route::get('/{id}/edit', [LevelController::class, 'edit']);
+    //     Route::put('/{id}', [LevelController::class, 'update']);
+    //     Route::get('/{id}/edit_ajax', [LevelController::class, 'edit_ajax']);    //menampilkan halaman form edit Level ajax
+    //     Route::put('/{id}/update_ajax', [LevelController::class, 'update_ajax']); //menyimpan perubahan data Level
+    //     Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);   //mengonfirmasi data Level
+    //     Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']); 
+    //     Route::delete('/{id}', [LevelController::class, 'destroy']);
+    // });
+
+    //Route dalam grup level harus punya role ADM
+    Route::middleware('authorize:ADM')->group(function () {
         Route::get('/', [LevelController::class, 'index']);
         Route::post('/list', [LevelController::class, 'list']);
         Route::get('/create', [LevelController::class, 'create']);

@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ProfileController;
 use App\http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,9 @@ Route::post('register', [AuthController::class, 'postregister']);
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/',[WelcomeController::class,'index']);
+
+    Route::get('/profile', [ProfileController::class,'index'])->name('profile.index');
+    Route::post('/profile/update-foto', [ProfileController::class, 'updateFoto'])->name('profile.updateFoto');
 
     //user
     Route::group(['prefix' => 'user'], function () {

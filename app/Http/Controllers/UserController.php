@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller

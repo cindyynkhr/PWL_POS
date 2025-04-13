@@ -11,6 +11,7 @@
                   <button onclick="modalAction('{{ url('/supplier/import') }}')" class="btn btn-info btn-sm">Import supplier</button> 
                   <button onclick="modalAction('{{ url('supplier/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
                   <a href="{{ url('/supplier/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export supplier</a> 
+                  <a href="{{ url('/supplier/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export supplier</a>
                 </div>
               </div>
             </div>

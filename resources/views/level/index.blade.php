@@ -10,7 +10,8 @@
             <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
               <button onclick="modalAction('{{ url('/level/import') }}')" class="btn btn-info btn-sm">Import level</button> 
               <button onclick="modalAction('{{ url('level/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
-              <a href="{{ url('/level/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export level</a> 
+              <a href="{{ url('/level/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export level</a>
+              <a href="{{ url('/level/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export level</a> 
             </div>
           </div>
         </div>

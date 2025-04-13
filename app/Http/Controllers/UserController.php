@@ -10,6 +10,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
@@ -285,7 +286,22 @@ class UserController extends Controller
         exit;
     }
 
- 
+    public function export_pdf()
+    {
+        set_time_limit(300);
+        
+        $user = UserModel::select('id_level','user_kode','nama')
+                    ->orderBy('id_level')
+                    ->orderBy('user_kode')
+                    ->with('level')
+                    ->get();
+        $pdf = PDF::loadView('user.export_pdf', ['user' => $user]);
+        $pdf->setPaper('A4', 'potrait');
+        $pdf->setOption("isRemoteEnabled", true);
+        $pdf->render();
+
+        return $pdf->stream('Data User '.date('Y-m-d H:i:s').'.pdf');
+    }
 
     //Menampilkan halaman form tambh user
     Public function create(){

@@ -1,13 +1,21 @@
 @extends('layouts.tamplate')
  @section('content')
  <div class="card card-outline card-primary">
-     <div class="card-header">
-         <h3 class="card-title">{{ $page->title }}</h3>
-         <div class="card-tools">
-             <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a>
-             <button onclick="modalAction('{{ url('kategori/create_ajax') }}')" class="btn btn-sm btn-danger mt-1">Tambah Ajax</button>
-         </div>
-     </div>
+    <div class="card-header">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <h3 class="card-title mb-0">Daftar kategori</h3>
+            </div>
+            <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+              <button onclick="modalAction('{{ url('/kategori/import') }}')" class="btn btn-info btn-sm">Import kategori</button> 
+              <button onclick="modalAction('{{ url('kategori/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
+              <a class="btn btn-primary btn-sm" href="{{ url('kategori/create') }}">Tambah Data</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
      <div class="card-body">
          @if(session('success'))
          <div class="alert alert-success alert-dismissible">

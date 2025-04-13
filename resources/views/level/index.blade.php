@@ -1,13 +1,20 @@
 @extends('layouts.tamplate')
  @section('content')
  <div class="card card-outline card-primary">
-     <div class="card-header">
-         <h3 class="card-title">{{ $page->title }}</h3>
-         <div class="card-tools">
-             <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a>
-             <button onclick="modalAction('{{ url('level/create_ajax') }}')" class="btn btn-sm btn-danger mt-1">Tambah Ajax</button>
-         </div>
-     </div>
+    <div class="card-header">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <h3 class="card-title mb-0">Daftar level</h3>
+            </div>
+            <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+              <button onclick="modalAction('{{ url('/level/import') }}')" class="btn btn-info btn-sm">Import level</button> 
+              <button onclick="modalAction('{{ url('level/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
+              <a class="btn btn-primary btn-sm" href="{{ url('level/create') }}">Tambah Data</a>
+            </div>
+          </div>
+        </div>
+      </div>
      <div class="card-body">
          @if(session('success'))
              <div class="alert alert-success alert-dismissible">

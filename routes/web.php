@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);   //mengonfirmasi data user
         Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']); 
         Route::delete('/{id}', [UserController::class, 'destroy']);             //menghapus data user
+        Route::get('/import', [UserController::class, 'import']);         //ajax form upload excel
+        Route::post('/import_ajax', [UserController::class, 'import_ajax']);      //ajax import exccel
     });
 
     //Route dalam grup level harus punya role ADM
@@ -67,6 +69,8 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);   //mengonfirmasi data Level
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']); 
             Route::delete('/{id}', [LevelController::class, 'destroy']);
+            Route::get('/import', [LevelController::class, 'import']);         //ajax form upload excel
+            Route::post('/import_ajax', [LevelController::class, 'import_ajax']);      //ajax import exccel
         });
         
         // route untuk kategori
@@ -85,6 +89,8 @@ Route::middleware(['auth'])->group(function(){
             Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']); 
             Route::delete('/{id}', [KategoriController::class, 'destroy']);
             Route::post('/list', [KategoriController::class, 'list']);
+            Route::get('/import', [KategoriController::class, 'import']);         //ajax form upload excel
+            Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);      //ajax import exccel
         });
         
         // route untuk stok
@@ -135,6 +141,8 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);   //mengonfirmasi data Supplier
             Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']); 
             Route::delete('/{id}', [SupplierController::class, 'destroy']);  // menghapus data user
+            Route::get('/import', [SupplierController::class, 'import']);         //ajax form upload excel
+            Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);      //ajax import exccel
         });
     });
 });

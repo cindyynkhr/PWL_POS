@@ -1,112 +1,126 @@
 @extends('layouts.tamplate') 
- 
+
 @section('content') 
-  <div class="card card-outline card-primary"> 
-      <div class="card-header"> 
-        <h3 class="card-title">{{ $page->title }}</h3> 
-        <div class="card-tools"> 
-          <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a> 
-          <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-danger mt-1">Tambah Ajax</button>
-        </div> 
-      </div> 
-      <div class="card-body"> 
-        @if (session('success'))
-          <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if (session('error'))
-          <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="col-1 control-label col-form-label">Filter</label>
-              <div class="col-3">
-                <select class="form-control" id="id_level" name="id_level">
-                  <option value="">- Semua -</option>
-                  @foreach ($level as $item)
-                      <option value="{{ $item->id_level }}">{{ $item->level_nama }}</option>
-                  @endforeach
-                </select>
-                <small class="from-text text-muted">Level Pengguna</small>
-              </div>
-            </div>
-          </div>
+<div class="card"> 
+  <div class="card-header">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h3 class="card-title mb-0">Daftar User</h3>
         </div>
-        <table class="table table-bordered table-striped table-hover table-sm" id="table_user"> 
-          <thead> 
-            <tr><th>ID</th><th>Username</th><th>Nama</th><th>Level Pengguna</th><th>Aksi</th></tr> 
-          </thead> 
-      </table> 
-    </div> 
+        <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+          <button onclick="modalAction('{{ url('/user/import') }}')" class="btn btn-info btn-sm">Import User</button> 
+          <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
+          <a class="btn btn-primary btn-sm" href="{{ url('user/create') }}">Tambah Data</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body"> 
+    {{-- Filter --}}
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="id_level">Filter Level Pengguna</label>
+          <select class="form-control" id="id_level" name="id_level">
+            <option value="">- Semua -</option>
+            @foreach ($level as $item)
+              <option value="{{ $item->id_level }}">{{ $item->level_nama }}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+    </div>
+
+    {{-- Alert --}}
+    @if (session('success'))
+      <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if (session('error'))
+      <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    {{-- Tabel --}}
+    <table class="table table-bordered table-striped table-hover table-sm" id="table_user"> 
+      <thead> 
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Nama</th>
+          <th>Level Pengguna</th>
+          <th>Aksi</th>
+        </tr> 
+      </thead> 
+    </table> 
   </div> 
+</div>
 
-  <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" 
-      data-keyboard="false" data-width="75%" aria-hidden="true"></div>
-
+{{-- Modal --}}
+<div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" 
+    data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection 
- 
-@push('css') 
-@endpush 
- 
+
 @push('js') 
-  <script> 
-    function modalAction(url = '') {
-      $('#myModal').load(url, function(){
-        $('#myModal').modal('show');
-      });
-    }
+<script> 
+  function modalAction(url = '') {
+    $('#myModal').load(url, function(){
+      $('#myModal').modal('show');
+    });
+  }
 
-    var dataUser;
-    $(document).ready(function() { 
-      dataUser = $('#table_user').DataTable({ 
-          // serverSide: true, jika ingin menggunakan server side processing 
-          serverSide: true,      
-          ajax: { 
-              "url": "{{ url('user/list') }}", 
-              "dataType": "json", 
-              "type": "POST",
-              "data": function (d) {
-                  d.id_level = $('#id_level').val();
-              }
-          }, 
-          columns: [ 
-            {
-              // nomor urut dari laravel datatable addIndexColumn() 
-              data: "DT_RowIndex",             
-              className: "text-center", 
-              orderable: false, 
-              searchable: false     
-            },{ 
-              data: "user_kode",                
-              className: "", 
-              // orderable: true, jika ingin kolom ini bisa diurutkan  
-              orderable: true,     
-              // searchable: true, jika ingin kolom ini bisa dicari 
-              searchable: true     
-            },{ 
-              data: "nama",                
-              className: "", 
-              orderable: true,     
-              searchable: true     
-            },{ 
-              // mengambil data level hasil dari ORM berelasi 
-              data: "level.level_nama",                
-              className: "", 
-              orderable: false,     
-              searchable: false     
-            },{ 
-              data: "aksi",                
-              className: "", 
-              orderable: false,     
-              searchable: false     
-            } 
-          ] 
-      }); 
-
-      $('#id_level').on('change', function() {
-          dataUser.ajax.reload();
-      });
-      
+  var dataUser;
+  $(document).ready(function() { 
+    dataUser = $('#table_user').DataTable({ 
+        serverSide: true,      
+        ajax: { 
+            "url": "{{ url('user/list') }}", 
+            "dataType": "json", 
+            "type": "POST",
+            "data": function (d) {
+                d.id_level = $('#id_level').val();
+            }
+        }, 
+        columns: [ 
+          {
+            data: "DT_RowIndex",             
+            className: "text-center", 
+            orderable: false, 
+            searchable: false     
+          },
+          { 
+            data: "user_kode",                
+            orderable: true,     
+            searchable: true     
+          },
+          { 
+            data: "nama",                
+            orderable: true,     
+            searchable: true     
+          },
+          { 
+            data: "level.level_nama",                
+            orderable: false,     
+            searchable: false     
+          },
+          { 
+            data: "aksi",                
+            orderable: false,     
+            searchable: false     
+          } 
+        ] 
     }); 
-  </script> 
-@endpush 
+
+    $('#id_level').on('change', function() {
+      dataUser.ajax.reload();
+    });
+
+    // Optional: Search on Enter
+    $('#table_user_filter input').unbind().bind('keyup', function(e) { 
+      if(e.keyCode == 13) {
+        dataUser.search(this.value).draw(); 
+      } 
+    }); 
+  }); 
+</script> 
+@endpush

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\SupplierModel;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class SupplierController extends Controller
 {
@@ -165,6 +166,73 @@ class SupplierController extends Controller
  
          return view('supplier.edit_ajax')->with('supplier', $supplier);
      }
+
+     public function import() 
+     { 
+         return view('supplier.import'); 
+     }
+ 
+     //import ajax
+     public function import_ajax(Request $request) 
+    { 
+        if($request->ajax() || $request->wantsJson()){ 
+            $rules = [ 
+                // validasi file harus xls atau xlsx, max 1MB 
+                'file_supplier' => ['required', 'mimes:xlsx', 'max:1024'] 
+            ]; 
+ 
+            $validator = Validator::make($request->all(), $rules); 
+            if($validator->fails()){ 
+                return response()->json([ 
+                    'status' => false, 
+                    'message' => 'Validasi Gagal', 
+                    'msgField' => $validator->errors() 
+                ]); 
+            } 
+            
+            $file = $request->file('file_supplier');  // ambil file dari request 
+ 
+            $reader = IOFactory::createReader('Xlsx');  // load reader file excel 
+            $reader->setReadDataOnly(true);             // hanya membaca data 
+            $spreadsheet = $reader->load($file->getRealPath()); // load file excel 
+            $sheet = $spreadsheet->getActiveSheet();    // ambil sheet yang aktif 
+ 
+            $data = $sheet->toArray(null, false, true, true);   // ambil data excel 
+ 
+            $insert = []; 
+            if(count($data) > 1){ // jika data lebih dari 1 baris 
+                foreach ($data as $baris => $value) { 
+                    if($baris > 1){ // baris ke 1 adalah header, maka lewati 
+                        $insert[] = [ 
+                            'supplier_kode' => $value['A'], 
+                            'nama' => $value['B'], 
+                            'nama_pt' => $value['C'], 
+                            'alamat' => $value['D'], 
+                            'created_at' => now(),
+                            'updated_at' => now() 
+                        ]; 
+                    } 
+                } 
+ 
+                if(count($insert) > 0){ 
+                    // insert data ke database, jika data sudah ada, maka diabaikan 
+                    supplierModel::insertOrIgnore($insert);    
+                } 
+ 
+                return response()->json([ 
+                    'status' => true, 
+                    'message' => 'Data berhasil diimport' 
+                ]); 
+            }else{ 
+                return response()->json([ 
+                    'status' => false, 
+                    'message' => 'Tidak ada data yang diimport' 
+                ]); 
+            } 
+        } 
+        return redirect('/supplier'); 
+    } 
+ 
  
      public function create()
      {

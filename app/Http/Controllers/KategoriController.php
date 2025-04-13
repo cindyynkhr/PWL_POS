@@ -218,6 +218,52 @@ class KategoriController extends Controller
        return redirect('/kategori'); 
    } 
 
+   public function export_excel()
+   {
+       $kategori = kategoriModel::select('kategori_kode','kategori_nama')
+                   ->orderBy('id_kategori')
+                   ->get();
+
+       //load library excel
+       $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+       $sheet = $spreadsheet->getActiveSheet();
+
+       $sheet->setCellValue('A1', 'No');
+       $sheet->setCellValue('B1', 'Kode kategori');
+       $sheet->setCellValue('C1', 'Nama kategori');
+
+       $sheet->getStyle('A1:C1')->getFont()->setBold(true);
+       
+       $no =1;
+       $baris = 2;
+       foreach ($kategori as $value) {
+           $sheet->setCellValue('A'.$baris, $no++);
+           $sheet->setCellValue('B'.$baris, $value->kategori_kode);
+           $sheet->setCellValue('C'.$baris, $value->kategori_nama);
+           $baris++;
+           $no++;
+       }
+       foreach (range('A', 'C') as $columnID) {
+           $sheet->getColumnDimension($columnID)->setAutoSize(true);
+       }
+
+       $sheet->setTitle('Data kategori');
+       $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+       $filename = 'Data kategori '. date('Y-m-d H:i:s') .'.xlsx';
+
+       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+       header('Content-Disposition: attachment;filename="'.$filename.'"');
+       header('Cache-Control: max-age=0');
+       header('Cache-Control: max-age=1');
+       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+       header('Cache-Control: cache, must-revalidate');
+       header('Pragma: public');
+
+       $writer->save('php://output');
+       exit;
+   }
+
     public function create()
     {
         $breadcrumb = (object) [

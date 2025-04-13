@@ -11,7 +11,7 @@
         <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
           <button onclick="modalAction('{{ url('/user/import') }}')" class="btn btn-info btn-sm">Import User</button> 
           <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
-          <a class="btn btn-primary btn-sm" href="{{ url('user/create') }}">Tambah Data</a>
+          <a href="{{ url('/user/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export User</a> 
         </div>
       </div>
     </div>

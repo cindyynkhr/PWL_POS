@@ -10,7 +10,7 @@
                 <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
                   <button onclick="modalAction('{{ url('/supplier/import') }}')" class="btn btn-info btn-sm">Import supplier</button> 
                   <button onclick="modalAction('{{ url('supplier/create_ajax') }}')" class="btn btn-danger btn-sm">Tambah Ajax</button>
-                  <a class="btn btn-primary btn-sm" href="{{ url('supplier/create') }}">Tambah Data</a>
+                  <a href="{{ url('/supplier/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export supplier</a> 
                 </div>
               </div>
             </div>

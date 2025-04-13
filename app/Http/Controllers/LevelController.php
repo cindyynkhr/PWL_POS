@@ -232,6 +232,53 @@ class LevelController extends Controller
        return redirect('/level'); 
    } 
 
+   public function export_excel()
+   {
+       $level= levelModel::select('level_kode','level_nama')
+                   ->orderBy('id_level')
+                   ->get();
+
+       //load library excel
+       $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+       $sheet = $spreadsheet->getActiveSheet();
+
+       $sheet->setCellValue('A1', 'No');
+       $sheet->setCellValue('B1', 'Kode level');
+       $sheet->setCellValue('C1', 'Nama level');
+
+       $sheet->getStyle('A1:C1')->getFont()->setBold(true);
+       
+       $no =1;
+       $baris = 2;
+       foreach ($level as $value) {
+           $sheet->setCellValue('A'.$baris, $no++);
+           $sheet->setCellValue('B'.$baris, $value->level_kode);
+           $sheet->setCellValue('C'.$baris, $value->level_nama);
+           $baris++;
+           $no++;
+       }
+       foreach (range('A', 'C') as $columnID) {
+           $sheet->getColumnDimension($columnID)->setAutoSize(true);
+       }
+
+       $sheet->setTitle('Data level');
+       $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+       $filename = 'Data level '. date('Y-m-d H:i:s') .'.xlsx';
+
+       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+       header('Content-Disposition: attachment;filename="'.$filename.'"');
+       header('Cache-Control: max-age=0');
+       header('Cache-Control: max-age=1');
+       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+       header('Cache-Control: cache, must-revalidate');
+       header('Pragma: public');
+
+       $writer->save('php://output');
+       exit;
+   }
+
+
 
     public function create()
     {

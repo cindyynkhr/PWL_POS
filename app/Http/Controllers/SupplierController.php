@@ -232,6 +232,57 @@ class SupplierController extends Controller
         } 
         return redirect('/supplier'); 
     } 
+
+    public function export_excel()
+   {
+       $supplier= supplierModel::select('supplier_kode','nama','nama_pt','alamat')
+                   ->orderBy('supplier_id')
+                   ->get();
+
+       //load library excel
+       $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+       $sheet = $spreadsheet->getActiveSheet();
+
+       $sheet->setCellValue('A1', 'No');
+       $sheet->setCellValue('B1', 'Kode supplier');
+       $sheet->setCellValue('C1', 'Nama supplier');
+       $sheet->setCellValue('D1', 'Nama PT');
+       $sheet->setCellValue('E1', 'Alamat');
+
+
+       $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+       
+       $no =1;
+       $baris = 2;
+       foreach ($supplier as $value) {
+           $sheet->setCellValue('A'.$baris, $no++);
+           $sheet->setCellValue('B'.$baris, $value->supplier_kode);
+           $sheet->setCellValue('C'.$baris, $value->nama);
+           $sheet->setCellValue('D'.$baris, $value->nama_pt);
+           $sheet->setCellValue('E'.$baris, $value->alamat);
+           $baris++;
+           $no++;
+       }
+       foreach (range('A', 'E') as $columnID) {
+           $sheet->getColumnDimension($columnID)->setAutoSize(true);
+       }
+
+       $sheet->setTitle('Data supplier');
+       $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+       $filename = 'Data supplier '. date('Y-m-d H:i:s') .'.xlsx';
+
+       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+       header('Content-Disposition: attachment;filename="'.$filename.'"');
+       header('Cache-Control: max-age=0');
+       header('Cache-Control: max-age=1');
+       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+       header('Cache-Control: cache, must-revalidate');
+       header('Pragma: public');
+
+       $writer->save('php://output');
+       exit;
+   }
  
  
      public function create()

@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function(){
         Route::delete('/{id}', [UserController::class, 'destroy']);             //menghapus data user
         Route::get('/import', [UserController::class, 'import']);         //ajax form upload excel
         Route::post('/import_ajax', [UserController::class, 'import_ajax']);      //ajax import exccel
+        Route::get('/export_excel', [UserController::class, 'export_excel']);  //export excel
     });
 
     //Route dalam grup level harus punya role ADM
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->group(function(){
             Route::delete('/{id}', [LevelController::class, 'destroy']);
             Route::get('/import', [LevelController::class, 'import']);         //ajax form upload excel
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']);      //ajax import exccel
+            Route::get('/export_excel', [LevelController::class, 'export_excel']);  //export excel
         });
         
         // route untuk kategori
@@ -91,6 +93,7 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/list', [KategoriController::class, 'list']);
             Route::get('/import', [KategoriController::class, 'import']);         //ajax form upload excel
             Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);      //ajax import exccel
+            Route::get('/export_excel', [KategoriController::class, 'export_excel']);  //export excel
         });
         
         // route untuk stok
@@ -144,6 +147,7 @@ Route::middleware(['auth'])->group(function(){
             Route::delete('/{id}', [SupplierController::class, 'destroy']);  // menghapus data user
             Route::get('/import', [SupplierController::class, 'import']);         //ajax form upload excel
             Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);      //ajax import exccel
+            Route::get('/export_excel', [SupplierController::class, 'export_excel']);  //export excel
         });
     });
 });

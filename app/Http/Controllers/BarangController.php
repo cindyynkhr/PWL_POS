@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
  use Yajra\DataTables\Facades\DataTables;
  use PhpOffice\PhpSpreadsheet\IOFactory;
  use Illuminate\Support\Facades\Validator;
+ use Barryvdh\DomPDF\Facade\Pdf;
  
 
 class BarangController extends Controller
@@ -281,6 +282,23 @@ class BarangController extends Controller
 
         $writer->save('php://output');
         exit;
+    }
+
+    public function export_pdf()
+    {
+        set_time_limit(300);
+        
+        $barang = BarangModel::select('id_kategori','barang_kode','barang_nama','harga_beli','harga_jual')
+                    ->orderBy('id_kategori')
+                    ->orderBy('barang_kode')
+                    ->with('kategori')
+                    ->get();
+        $pdf = PDF::loadView('barang.export_pdf', ['barang' => $barang]);
+        $pdf->setPaper('A4', 'potrait');
+        $pdf->setOption("isRemoteEnabled", true);
+        $pdf->render();
+
+        return $pdf->stream('Data Kategori '.date('Y-m-d H:i:s').'.pdf');
     }
 
     public function create()

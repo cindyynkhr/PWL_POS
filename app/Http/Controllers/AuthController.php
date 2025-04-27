@@ -26,24 +26,6 @@ class AuthController extends Controller
         return view('auth.register', compact('levels'));
     }
 
-    // public function postregister(Request $request)
-    // {
-    //     $request->validate([
-    //         'nama' => 'required|string|max:100',
-    //         'user_kode' => 'required|string|max:20|unique:m_user,user_kode',
-    //         'password' => 'required|string|min:6|confirmed',
-    //         'id_level' => 'required|exists:m_level,id_level',
-    //     ]);
-
-    //     UserModel::create([
-    //         'nama' => $request->nama,
-    //         'user_kode' => $request->user_kode,
-    //         'password' => Hash::make($request->password),
-    //         'id_level' => $request->id_level,
-    //     ]);
-
-    //     return redirect('login')->with('success', 'Pendaftaran berhasil! Silakan login.');
-    // }
     
     public function postRegister(Request $request)
     {

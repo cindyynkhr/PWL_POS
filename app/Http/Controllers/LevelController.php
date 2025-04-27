@@ -134,6 +134,30 @@ class LevelController extends Controller
         return redirect('/level');
     }
 
+    //show ajax
+    // public function show_(string $id)
+    // {
+    //     $level = LevelModel::find($id);
+
+    //     $breadcrumb = (object) [
+    //         'title' => 'Detail Level',
+    //         'list' => ['Home', 'Level', 'Detail']
+    //     ];
+
+    //     $page = (object) [
+    //         'title' => 'Detail Level'
+    //     ];
+
+    //     $activeMenu = 'level';
+
+    //     return view('level.show', [
+    //         'breadcrumb' => $breadcrumb,
+    //         'page' => $page,
+    //         'level' => $level,
+    //         'activeMenu' => $activeMenu
+    //     ]);
+    // }
+    
     //confirm ajax
     public function confirm_ajax(Request $request, $id){
         $level = LevelModel::find($id);
@@ -294,6 +318,15 @@ class LevelController extends Controller
        return $pdf->stream('Data level '.date('Y-m-d H:i:s').'.pdf');
    }
 
+   public function show_ajax(string $id)
+   {
+       $level = LevelModel::find($id);
+
+       return view('level.show_ajax', [
+           'level' => $level
+       ]);
+   }
+
     public function create()
     {
         $breadcrumb = (object) [
@@ -324,21 +357,29 @@ class LevelController extends Controller
         return redirect('/level')->with('success', 'Data level berhasil disimpan');
     }
 
-    public function show($id)
-    {
-        $breadcrumb = (object) [
-            'title' => 'Detail Level',
-            'list' => ['Home', 'Level', 'Detail']
-        ];
+     public function show(string $id)
+{
+    $level = LevelModel::find($id);
 
-        $page = (object) [
-            'title' => 'Detail Data Level Level'
-        ];
+    $breadcrumb = (object) [
+        'title' => 'Detail Level',
+        'list' => ['Home', 'Level', 'Detail']
+    ];
 
-        $level = LevelModel::find($id);
-        $activeMenu = 'level';
-        return view('level.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'activeMenu' => $activeMenu]);
-    }
+    $page = (object) [
+        'title' => 'Detail Level'
+    ];
+
+    $activeMenu = 'level';
+
+    return view('level.show', [
+        'breadcrumb' => $breadcrumb,
+        'page' => $page,
+        'level' => $level,
+        'activeMenu' => $activeMenu
+    ]);
+}
+
 
     public function edit($id)
     {

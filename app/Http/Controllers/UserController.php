@@ -169,6 +169,17 @@ class UserController extends Controller
          return redirect('/user');
      }
 
+     public function show_ajax(string $id)
+     {
+         $user = UserModel::with('level')->find($id); // tambahkan eager loading
+         $level = LevelModel::select('id_level', 'level_nama')->get();
+     
+         return view('user.show_ajax', [
+             'user' => $user,
+             'level' => $level
+         ]);
+     }
+     
      //import
      public function import() 
      { 

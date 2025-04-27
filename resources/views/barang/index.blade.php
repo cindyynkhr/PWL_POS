@@ -4,12 +4,21 @@
     <div class="card"> 
         <div class="card-header"> 
             <h3 class="card-title">Daftar barang</h3> 
-            <div class="card-tools"> 
-                <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info">Import Barang</button> 
-                <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Barang</a> 
-                <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export Barang</a>
-                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button> 
-            </div> 
+            <div class="d-flex flex-wrap gap-2 justify-content-md-end justify-content-start">
+                <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info btn-sm btn-action">
+                    Import barang
+                </button>
+                <button onclick="modalAction('{{ url('barang/create_ajax') }}')" class="btn btn-danger btn-sm btn-action">
+                    Tambah Ajax
+                </button>
+                <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary btn-sm btn-action">
+                    <i class="fa fa-file-excel"></i> Export barang
+                </a>
+                <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning btn-sm btn-action">
+                    <i class="fa fa-file-pdf"></i> Export barang
+                </a>
+            </div>
+            
         </div> 
         <div class="card-body"> 
             <!-- untuk Filter data --> 
@@ -57,6 +66,33 @@
                 <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>     
             @endsection 
              
+            @push('css')
+            <style>
+                .btn-action {
+                    min-width: 130px;
+                    text-align: center;
+                }
+            
+                .gap-2 > * {
+                    margin-right: 0.5rem;
+                    margin-bottom: 0.5rem;
+                }
+            
+                .action-buttons {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    gap: 0.25rem;
+                    justify-content: center;
+                }
+            
+                .action-buttons .btn {
+                    white-space: nowrap;
+                    padding: 0.25rem 0.5rem;
+                    font-size: 0.75rem;
+                }
+            </style>
+            @endpush
+            
             @push('js') 
             <script> 
                 function modalAction(url = ''){ 

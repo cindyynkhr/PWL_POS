@@ -300,6 +300,15 @@ class SupplierController extends Controller
        return $pdf->stream('Data Supplier '.date('Y-m-d H:i:s').'.pdf');
    }
 
+   public function show_ajax(string $id)
+   {
+       $supplier = SupplierModel::find($id);
+
+       return view('supplier.show_ajax', [
+           'supplier' => $supplier,
+       ]);
+   }
+
      public function create()
      {
          $breadcrumb = (object) [

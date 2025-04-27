@@ -155,6 +155,13 @@ class BarangController extends Controller
         return redirect('/barang');
     }
 
+    public function show_ajax(string $id)
+    {
+        $barang = barangModel::find($id);
+        $kategori = KategoriModel::select('id_kategori', 'kategori_nama')->get();
+        return view('barang.show_ajax', ['barang' => $barang, 'kategori' => $kategori]);
+    }
+
     //menampilkan halaman form edit user ajax
     public function edit_ajax(string $id){
         $barang = BarangModel::find($id);

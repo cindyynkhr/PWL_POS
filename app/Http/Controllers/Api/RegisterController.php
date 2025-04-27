@@ -13,7 +13,7 @@ class RegisterController extends Controller
     {
         // Set validation
         $validator = Validator::make($request->all(), [
-            'user_kode' => 'required',
+            'user_kode' => 'required|unique:m_user,user_kode',
             'nama' => 'required',
             'password' => 'required|min:5|confirmed',
             'id_level' => 'required'
